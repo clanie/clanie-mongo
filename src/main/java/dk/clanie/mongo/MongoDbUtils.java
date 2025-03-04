@@ -41,7 +41,7 @@ public class MongoDbUtils {
 	 * 
 	 * If given string is null no criteria is added.
 	 */
-	public static Criteria critiaAndContains(Criteria criteria, String property, String string) {
+	public static Criteria criteriaAndContains(Criteria criteria, String property, String string) {
 		if (hasText(string)) {
 	         String regex = Pattern.quote(string);
 	         criteria = criteria.and(property).regex(regex, "i");
@@ -55,7 +55,7 @@ public class MongoDbUtils {
 	 * 
 	 * If given string is null no criteria is added.
 	 */
-	public static Criteria critiaAndContains(Criteria criteria, List<String> properties, String string) {
+	public static Criteria criteriaAndContains(Criteria criteria, List<String> properties, String string) {
 		if (hasText(string)) {
 	         String regex = Pattern.quote(string);
 	         criteria = criteria.orOperator(mapList(properties, property -> where(property).regex(regex, "i")));
@@ -69,8 +69,26 @@ public class MongoDbUtils {
 	 * 
 	 * This is typically for excluding something with a deleted, failed or broken flag or similar.
 	 */
-	public static Criteria critiaAndNotTrue(Criteria criteria, String property, Boolean negativeFilter) {
+	public static Criteria criteriaAndNotTrue(Criteria criteria, String property, Boolean negativeFilter) {
 		if (isTrue(negativeFilter)) {
+			criteria = criteria.and(property).ne(true);
+		}
+		return criteria;
+	}
+
+
+	/**
+	 * Ads criteria that given property is NOT true unless filter IS true.
+	 * <p/>
+	 * This is typically for filters which will including something with a disabled or deleted
+	 * flag or similar, while excluding it by default.
+	 * <p/>
+	 * Btw. this kind of filter is usually a bad idea, as people don't expect stuff to be filtered
+	 * out when no filtering is specified, so think twice before using this.<br/>
+	 * Consider renaming your includeXxx filter to excludeXxx and using criteriaAndNotTrue() instead.
+	 */
+	public static Criteria criteriaAndNotTrueUnless(Criteria criteria, String property, Boolean filter) {
+		if (!isTrue(filter)) {
 			criteria = criteria.and(property).ne(true);
 		}
 		return criteria;
