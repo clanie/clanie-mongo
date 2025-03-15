@@ -12,7 +12,7 @@ public class DateToZonedDateTimeConverter implements Converter<Date, ZonedDateTi
 
 	@Override
 	public ZonedDateTime convert(Date source) {
-		return source.toInstant().atZone(ZoneOffset.UTC);
+		return source.toInstant().atZone(ZoneOffset.systemDefault());
 	}
 
 
