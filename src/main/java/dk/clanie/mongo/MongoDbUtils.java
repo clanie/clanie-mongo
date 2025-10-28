@@ -79,13 +79,14 @@ public class MongoDbUtils {
 
 	/**
 	 * Ads criteria that given property is NOT true unless filter IS true.
-	 * <p/>
+	 * <p>
 	 * This is typically for filters which will including something with a disabled or deleted
 	 * flag or similar, while excluding it by default.
-	 * <p/>
+	 * </p><p>
 	 * Btw. this kind of filter is usually a bad idea, as people don't expect stuff to be filtered
 	 * out when no filtering is specified, so think twice before using this.<br/>
 	 * Consider renaming your includeXxx filter to excludeXxx and using criteriaAndNotTrue() instead.
+	 * </p>
 	 */
 	public static Criteria criteriaAndNotTrueUnless(Criteria criteria, String property, Boolean filter) {
 		if (!isTrue(filter)) {
