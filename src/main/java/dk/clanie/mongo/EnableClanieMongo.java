@@ -27,8 +27,6 @@ import java.lang.annotation.Target;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
-import dk.clanie.core.EnableClanieCore;
-
 /**
  * Enables common mongo-db configuration and components.
  * 
@@ -38,7 +36,6 @@ import dk.clanie.core.EnableClanieCore;
 @Target(ElementType.TYPE)
 @Documented
 @Configuration
-@EnableClanieCore
 @Import(ClanieMongoConfig.class)
 public @interface EnableClanieMongo {
 
