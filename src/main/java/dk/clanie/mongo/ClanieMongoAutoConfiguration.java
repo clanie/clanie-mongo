@@ -15,14 +15,32 @@
  * with this program; if not, write to the Free Software Foundation, Inc.,
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
-
 package dk.clanie.mongo;
 
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
+import org.springframework.boot.autoconfigure.AutoConfiguration;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.context.annotation.Bean;
 
-@Configuration
-@ComponentScan(basePackageClasses = ClanieMongoConfig.class)
-public class ClanieMongoConfig {
+import dk.clanie.mongo.convert.DateToZonedDateTimeConverter;
+import dk.clanie.mongo.convert.ZonedDateTimeToDateConverter;
+
+/**
+ * {@link EnableAutoConfiguration Auto-configuration} for Mongo.
+ */
+@AutoConfiguration
+public class ClanieMongoAutoConfiguration {
+
+
+	@Bean
+	DateToZonedDateTimeConverter dateToZonedDateTimeConverter() {
+		return new DateToZonedDateTimeConverter();
+	}
+
+
+	@Bean
+	ZonedDateTimeToDateConverter zonedDateTimeToDateConverter() {
+		return new ZonedDateTimeToDateConverter();
+	}
+
 
 }
