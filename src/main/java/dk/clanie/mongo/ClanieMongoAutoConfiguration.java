@@ -52,7 +52,7 @@ public class ClanieMongoAutoConfiguration {
 	 */
 	@Bean
 	BeforeConvertCallback<AbstractEntity> beforeConvertCallback() {
-		return (entity, collection) -> {
+		return (entity, _) -> {
 			if (entity.getId() == null) {
 				entity.setId(UUID.randomUUID());
 			}
