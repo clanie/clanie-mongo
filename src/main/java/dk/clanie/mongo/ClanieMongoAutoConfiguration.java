@@ -17,12 +17,16 @@
  */
 package dk.clanie.mongo;
 
+import java.util.UUID;
+
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.Bean;
+import org.springframework.data.mongodb.core.mapping.event.BeforeConvertCallback;
 
 import dk.clanie.mongo.convert.DateToZonedDateTimeConverter;
 import dk.clanie.mongo.convert.ZonedDateTimeToDateConverter;
+import dk.clanie.mongo.entity.AbstractEntity;
 
 /**
  * {@link EnableAutoConfiguration Auto-configuration} for Mongo.
@@ -40,6 +44,20 @@ public class ClanieMongoAutoConfiguration {
 	@Bean
 	ZonedDateTimeToDateConverter zonedDateTimeToDateConverter() {
 		return new ZonedDateTimeToDateConverter();
+	}
+
+
+	/**
+	 * Automatically generates UUID for entities that don't have an ID set.
+	 */
+	@Bean
+	BeforeConvertCallback<AbstractEntity> beforeConvertCallback() {
+		return (entity, collection) -> {
+			if (entity.getId() == null) {
+				entity.setId(UUID.randomUUID());
+			}
+			return entity;
+		};
 	}
 
 
