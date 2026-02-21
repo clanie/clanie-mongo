@@ -17,7 +17,11 @@
  */
 package dk.clanie.mongo.entity;
 
-import java.util.UUID;
+import java.time.Instant;
+
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.annotation.Version;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -30,8 +34,15 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder(toBuilder = true)
 @NoArgsConstructor
 @AllArgsConstructor
-public abstract class AbstractTenantEntity extends AbstractAuditedEntity {
+public abstract class AbstractAuditedEntity extends AbstractEntity {
 
-	private UUID tenantId;
-	
+	@Version
+	private Long version;
+
+	@CreatedDate
+	private Instant createdDate;	
+
+	@LastModifiedDate
+	private Instant lastModifiedDate;	
+
 }
