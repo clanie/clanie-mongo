@@ -143,7 +143,7 @@ public class CascadeDeleteChangeStreamManager implements SmartLifecycle {
                 CascadeDelete annotation = property.findAnnotation(CascadeDelete.class);
                 if (annotation != null) {
                     Class<?> parentClass = resolveParentClass(annotation);
-                    result.computeIfAbsent(parentClass, k -> new ArrayList<>())
+                    result.computeIfAbsent(parentClass, _ -> new ArrayList<>())
                           .add(new CascadeRelation(entity.getType(), property.getFieldName()));
                 }
             });
