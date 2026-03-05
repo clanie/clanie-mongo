@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025, Claus Nielsen, clausn999@gmail.com
+ * Copyright (C) 2026, Claus Nielsen, clausn999@gmail.com
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -36,7 +36,7 @@ import java.lang.annotation.Target;
  * <p>Example usage:</p>
  * <pre>
  * &#64;Indexed
- * &#64;CascadeDelete(parent = Portfolio.class)
+ * &#64;CascadeDelete(Portfolio.class)
  * String portfolioId;
  * </pre>
  *
@@ -48,8 +48,15 @@ import java.lang.annotation.Target;
 public @interface CascadeDelete {
 
     /**
-     * The parent document class whose deletions should be cascaded to the owning document.
+     * Alias for {@link #parent()}.
+     * Allows shorthand usage: {@code @CascadeDelete(Portfolio.class)}.
      */
-    Class<?> parent();
+    Class<?> value() default void.class;
+
+    /**
+     * The parent document class whose deletions should be cascaded to the owning document.
+     * Can be omitted when using the shorthand form {@code @CascadeDelete(Portfolio.class)}.
+     */
+    Class<?> parent() default void.class;
 
 }

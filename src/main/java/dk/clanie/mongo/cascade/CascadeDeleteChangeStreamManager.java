@@ -142,12 +142,37 @@ public class CascadeDeleteChangeStreamManager implements SmartLifecycle {
             entity.doWithProperties((MongoPersistentProperty property) -> {
                 CascadeDelete annotation = property.findAnnotation(CascadeDelete.class);
                 if (annotation != null) {
-                    result.computeIfAbsent(annotation.parent(), k -> new ArrayList<>())
+                    Class<?> parentClass = resolveParentClass(annotation);
+                    result.computeIfAbsent(parentClass, k -> new ArrayList<>())
                           .add(new CascadeRelation(entity.getType(), property.getFieldName()));
                 }
             });
         }
         return result;
+    }
+
+    /**
+     * Resolves the parent class from a {@link CascadeDelete} annotation,
+     * supporting both {@code @CascadeDelete(Portfolio.class)} (shorthand via {@code value})
+     * and {@code @CascadeDelete(parent = Portfolio.class)}.
+     *
+     * @throws IllegalArgumentException if neither {@code value} nor {@code parent} is specified,
+     *                                  or if both are specified with different values
+     */
+    private static Class<?> resolveParentClass(CascadeDelete annotation) {
+        Class<?> value = annotation.value();
+        Class<?> parent = annotation.parent();
+        boolean valueSet = value != void.class;
+        boolean parentSet = parent != void.class;
+        if (valueSet && parentSet && value != parent) {
+            throw new IllegalArgumentException(
+                    "@CascadeDelete has conflicting 'value' and 'parent' attributes.");
+        }
+        if (!valueSet && !parentSet) {
+            throw new IllegalArgumentException(
+                    "@CascadeDelete requires either 'value' or 'parent' to be specified.");
+        }
+        return valueSet ? value : parent;
     }
 
     /** Loads the persisted resume token for the given collection, or {@code null} if none. */
