@@ -19,14 +19,40 @@ package dk.clanie.mongo;
 
 import static dk.clanie.core.Utils.asUuid;
 
+import java.time.LocalDate;
 import java.util.UUID;
 
 public final class MongoConstants {
+
 
 	private MongoConstants() {
 		// Not meant to be instantiated
 	}
 
+
 	public static final UUID ADMIN_TENANT_ID = asUuid("00000000-0000-0000-0000-000000000000");
+
+
+	/**
+	 * A LocalDate far in the future.
+	 * <p>
+	 * It is used to represent the end of a validity period that has no end date.
+	 * </p>
+	 * Use this in favor of LocalDate.MAX because LocalDate.MAX is out of range
+	 * for the Date class, so the converter used for MongoDB will fail. 
+	 */
+	public static final LocalDate MAX_LOCAL_DATE = LocalDate.of(9999, 12, 31);
+
+
+	/**
+	 * A LocalDate far in the past.
+	 * <p>
+	 * It is used to represent the end of a validity period that has no start date.
+	 * </p>
+	 * Use this in favor of LocalDate.MIN because LocalDate.MIN is out of range
+	 * for the Date class, so the converter used for MongoDB will fail. 
+	 */
+	public static final LocalDate MIN_LOCAL_DATE = LocalDate.of(0001, 01, 01);
+
 
 }
