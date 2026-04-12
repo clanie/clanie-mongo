@@ -24,7 +24,9 @@ import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.data.mongodb.core.mapping.event.BeforeConvertCallback;
 
+import dk.clanie.mongo.convert.DateToLocalDateConverter;
 import dk.clanie.mongo.convert.DateToZonedDateTimeConverter;
+import dk.clanie.mongo.convert.LocalDateToDateConverter;
 import dk.clanie.mongo.convert.ZonedDateTimeToDateConverter;
 import dk.clanie.mongo.entity.AbstractEntity;
 
@@ -33,6 +35,18 @@ import dk.clanie.mongo.entity.AbstractEntity;
  */
 @AutoConfiguration
 public class ClanieMongoAutoConfiguration {
+
+
+	@Bean
+	DateToLocalDateConverter dateToLocalDateConverter() {
+		return new DateToLocalDateConverter();
+	}
+
+
+	@Bean
+	LocalDateToDateConverter localDateToDateConverter() {
+		return new LocalDateToDateConverter();
+	}
 
 
 	@Bean
